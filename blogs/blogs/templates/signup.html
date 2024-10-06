@@ -1,0 +1,39 @@
+{%extends "base.html"%}
+{% from "form_macros.html" import render_field %}
+
+{% block title%}
+<title> BLOG APP | Index</title>
+{%endblock%}
+
+{% block other%}
+<article class="flashes">
+  {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <ul>
+          {% for message in messages %}
+          <li>{{ message }}</li>
+          {% endfor %}
+      </ul>
+      {% endif %}
+  {% endwith %}
+</article>
+
+<article>
+  <h1 style="clear:both">Please Sign Up</h1>
+  <form action="" method="post">
+      {{ form.hidden_tag() }}
+      <table>
+          {{ render_field(form.username, size=50) }}
+          {{ render_field(form.email, size=50) }}
+          {{ render_field(form.password, size=50) }}
+          {{ render_field(form.password2, size=50) }}
+          
+          <tr class="submit">
+              <td></td>
+              <td><button type="submit">Sign Up</button></td>
+          </tr>
+      </table>
+  </form>
+</article>
+
+{%endblock%}

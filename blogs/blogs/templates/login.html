@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% from "form_macros.html" import render_field %}
+
+{% block title %}
+    <title>Login</title>
+{% endblock %}
+
+{% block other %}
+<article class="flashes">
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+</article>
+
+<article>
+    <h1 style="clear:both">Please Login</h1>
+    <form action="{{ url_for('login') }}" method="post">  <!-- Single form tag -->
+        {{ form.hidden_tag() }}  <!-- This includes the CSRF token -->
+        <table>
+            {{ render_field(form.email, size=50, placeholder="your email") }}
+            {{ render_field(form.password, size=50, placeholder="your password") }}
+            {{ render_field(form.remember_me, placeholder="remember me") }}
+
+            <tr class="submit">
+                <td></td>
+                <td><button type="submit">Log In</button></td>
+            </tr>
+        </table>
+    </form>
+</article>
+{% endblock %}

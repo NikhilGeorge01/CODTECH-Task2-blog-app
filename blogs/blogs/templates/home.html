@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% from 'form_macros.html' import render_field %}
+
+{% block title %}
+   Home
+{% endblock %}
+
+{% block content %}
+<h1 class="mt-2">Hello {{ current_user.username }}!</h1>  <!-- Adjusted header -->
+<div class="container">  <!-- Added a container to center content -->
+    <form action="" method="POST">
+        {{ form.hidden_tag() }}
+        
+        <!-- Post Name Field -->
+        <div class="form-group">
+            {{ render_field(form.post_name, class="form-control", placeholder="Enter blog name") }} <!-- Added this field -->
+        </div>
+
+        <!-- Content Field -->
+        <div class="form-group">
+            {{ render_field(form.content, class="form-control", placeholder="Tell your story") }}
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Post</button>
+    </form>
+</div>
+
+<div class="row mt-4">  <!-- Added margin to separate the posts section -->
+    <div class="col-md-4"> <!-- Profile card column -->
+        <div class="card">
+            <img class="card-img-top" src="{{ gravatar }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ current_user.email }}</h5>
+                <p class="card-text">Look at all Public Blogs</p>
+                <a href="{{ url_for('public') }}" class="btn btn-primary">Public Blogs</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8"> <!-- Posts column -->
+        {% if posts %}
+            {% for post in posts %}
+                <div class="card mb-3">
+                    <div class="card-header">
+                        {{ post.postname }}  <!-- Ensure this is correct -->
+                    </div>
+                    <div class="card-body" style="max-height: 200px; overflow-y: auto;">
+                        <p class="card-text">{{ post.content }}</p>
+                    </div>
+                    <div class="card-footer">
+                        <!-- Update Button -->
+                        <a href="{{ url_for('update_post', post_id=post.id) }}" class="btn btn-warning btn-sm">Update</a>
+                        
+                        <!-- Delete Form -->
+                        <form action="{{ url_for('delete_post', post_id=post.id) }}" method="POST" style="display:inline;">
+                            {{ form.hidden_tag() }}  <!-- If using Flask-WTF for CSRF protection -->
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No posts made.</p>
+        {% endif %}
+    </div>
+    
+</div>
+
+{% endblock %}
+
